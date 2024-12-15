@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  timeoff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Exposes the app on port 3000
+    environment:
+      NODE_ENV: production # Set the app environment to production
+    volumes:
+      - ./config/app.json:/app/config/app.json # Map config file for persistence and editing
+    restart: unless-stopped # Ensures the container restarts automatically on failure
+    healthcheck: # Optional health check for better monitoring
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
